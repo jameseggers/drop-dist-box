@@ -34,10 +34,10 @@ ActiveRecord::Schema.define(version: 20170118195552) do
 
   create_table "nodes", force: :cascade do |t|
     t.string   "name"
-    t.string   "ip_address"
-    t.integer  "type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "address"
+    t.integer  "node_type_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "users", force: :cascade do |t|

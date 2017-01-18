@@ -2,8 +2,8 @@ require 'jwt'
 
 class DistFilesController < ApplicationController
   before_action :set_dist_file, only: [:show, :edit, :update, :destroy, :download]
-  before_action :is_able_to_download?, only: :download
-  before_action :authenticate_user!, except: :download
+  protect_from_forgery except: [:download, :create]
+  before_action :is_user_authenticated?
 
   # GET /dist_files
   # GET /dist_files.json
@@ -35,11 +35,16 @@ class DistFilesController < ApplicationController
   # POST /dist_files
   # POST /dist_files.json
   def create
+    Rails.logger.debug request.headers['Content-Type']
     @dist_file = DistFile.new(dist_file_params)
-    @dist_file.user_id = current_user.id
+    @dist_file.user_id = (@token) ? @token[0]["user_id"] : current_user.id
 
     respond_to do |format|
       if @dist_file.save
+        ReplicaUploaderWorker.perform_async(@dist_file.name,
+          @dist_file.attached.path, @dist_file.attached.content_type,
+          current_user.get_token) unless @token
+
         format.html { redirect_to @dist_file, notice: 'Dist file was successfully created.' }
         format.json { render :show, status: :created, location: @dist_file }
       else
@@ -84,8 +89,18 @@ class DistFilesController < ApplicationController
       params.require(:dist_file).permit(:name, :attached)
     end
 
-    def is_able_to_download?
-      token = JWT.decode(params[:token], Rails.application.secrets.secret_key_base)
-      return (token) ? token : false
+    def is_token_valid?
+      @token = JWT.decode(params[:token], Rails.application.secrets.secret_key_base)
+      return (@token) ? true : false
+    end
+
+    def is_user_authenticated?
+      if params.key? :token
+        @token = JWT.decode(params[:token], Rails.application.secrets.secret_key_base)
+        return (@token) ? true : false
+      else
+        @token = false
+        authenticate_user!
+      end
     end
 end

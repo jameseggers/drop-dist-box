@@ -1,18 +1,20 @@
-require 'rest_client'
+require 'rest-client'
 
 class ReplicaUploaderWorker
   include Sidekiq::Worker
 
-  def perform(dist_file)
+  def perform(name, path, type, token)
     storage_node_type = NodeType.find_by(name: "storage").id
     storage_nodes = Node.where(node_type_id: storage_node_type)
     storage_nodes.each do |node|
-      RestClient.post(node.address, {
+
+      RestClient.post("http://"+node.address+"/dist_files/", {
+        token: token,
         dist_file: {
-          name: dist_file.name,
-          attached: File.new(dist_file.attached.path))
+          name: name,
+          attached: File.open("/Users/jameseggers/Projects/backProj.png", 'rb')
         }
-      }
+      }, {format: "HTML"})
     end
   end
 end
