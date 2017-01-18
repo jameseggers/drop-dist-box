@@ -1,0 +1,27 @@
+<%= form_for dist_file, html: { multipart: true } do |f| %>
+  <% if dist_file.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(dist_file.errors.count, "error") %> prohibited this dist_file from being saved:</h2>
+
+      <ul>
+      <% dist_file.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :attached %>
+    <%= f.file_field :attached %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

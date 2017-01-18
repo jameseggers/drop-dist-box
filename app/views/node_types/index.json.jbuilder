@@ -1,0 +1,1 @@
+json.array! @node_types, partial: 'node_types/node_type', as: :node_type

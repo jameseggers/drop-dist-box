@@ -1,0 +1,1 @@
+json.partial! "node_types/node_type", node_type: @node_type

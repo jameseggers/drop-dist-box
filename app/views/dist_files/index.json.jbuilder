@@ -1,0 +1,1 @@
+json.array! @dist_files, partial: 'dist_files/dist_file', as: :dist_file

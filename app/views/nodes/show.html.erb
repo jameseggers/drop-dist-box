@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @node.name %>
+</p>
+
+<p>
+  <strong>Ip address:</strong>
+  <%= @node.ip_address %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @node.type %>
+</p>
+
+<%= link_to 'Edit', edit_node_path(@node) %> |
+<%= link_to 'Back', nodes_path %>

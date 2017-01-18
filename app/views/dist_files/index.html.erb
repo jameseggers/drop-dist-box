@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Dist Files</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Attachment</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dist_files.each do |dist_file| %>
+      <tr>
+        <td><%= dist_file.name %></td>
+        <td><%= image_tag dist_file.attached.url %></td>
+        <td><%= dist_file.user_id %></td>
+        <td><%= link_to 'Show', dist_file %></td>
+        <td><%= link_to 'Edit', edit_dist_file_path(dist_file) %></td>
+        <td><%= link_to 'Destroy', dist_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dist File', new_dist_file_path %>
