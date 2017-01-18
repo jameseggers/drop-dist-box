@@ -16,8 +16,8 @@
     <% @nodes.each do |node| %>
       <tr>
         <td><%= node.name %></td>
-        <td><%= node.ip_address %></td>
-        <td><%= node.type %></td>
+        <td><%= node.address %></td>
+        <td><%= node.node_type_id %></td>
         <td><%= link_to 'Show', node %></td>
         <td><%= link_to 'Edit', edit_node_path(node) %></td>
         <td><%= link_to 'Destroy', node, method: :delete, data: { confirm: 'Are you sure?' } %></td>

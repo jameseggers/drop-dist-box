@@ -36,6 +36,7 @@ class DistFilesController < ApplicationController
   # POST /dist_files.json
   def create
     @dist_file = DistFile.new(dist_file_params)
+    @dist_file.user_id = current_user.id
 
     respond_to do |format|
       if @dist_file.save
