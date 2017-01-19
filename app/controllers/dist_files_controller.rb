@@ -41,9 +41,8 @@ class DistFilesController < ApplicationController
 
     respond_to do |format|
       if @dist_file.save
-        ReplicaUploaderWorker.perform_async(@dist_file.name,
-          @dist_file.attached.path, @dist_file.attached.content_type,
-          current_user.get_token) unless @token
+        ReplicaWorker.perform_async({name_of_file: @dist_file.name,
+          path: @dist_file.attached.path, token: current_user.get_token}) unless @token
 
         format.html { redirect_to @dist_file, notice: 'Dist file was successfully created.' }
         format.json { render :show, status: :created, location: @dist_file }
@@ -71,6 +70,7 @@ class DistFilesController < ApplicationController
   # DELETE /dist_files/1
   # DELETE /dist_files/1.json
   def destroy
+    ReplicaWorker.perform_async({id_of_dist_file: @dist_file.id, token: current_user.get_token}) unless @token
     @dist_file.destroy
     respond_to do |format|
       format.html { redirect_to dist_files_url, notice: 'Dist file was successfully destroyed.' }

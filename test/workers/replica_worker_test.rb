@@ -1,5 +1,5 @@
 require 'test_helper'
-class ReplicaUploaderWorkerTest < MiniTest::Unit::TestCase
+class ReplicaWorkerTest < MiniTest::Unit::TestCase
   def test_example
     skip "add some examples to (or delete) #{__FILE__}"
   end
