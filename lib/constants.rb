@@ -1,0 +1,5 @@
+module Constants
+  UPLOAD_REQUEST = 1
+  DELETE_REQUEST = 2
+  UPDATE_REQUEST = 3
+end

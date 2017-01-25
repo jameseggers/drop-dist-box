@@ -1,6 +1,8 @@
 require 'jwt'
+require 'constants'
 
 class DistFilesController < ApplicationController
+  include Constants
   before_action :set_dist_file, only: [:show, :edit, :update, :destroy, :download]
   protect_from_forgery except: [:download, :create]
   before_action :is_user_authenticated?
@@ -41,14 +43,22 @@ class DistFilesController < ApplicationController
 
     respond_to do |format|
       if @dist_file.save
-        ReplicaWorker.perform_async({name_of_file: @dist_file.name,
-          path: @dist_file.attached.path, token: current_user.get_token}) unless @token
+        if @token
+          format.html { head :created }
+        else
+          ReplicaWorker.perform_async(@dist_file.name, -1, @dist_file.attached.path,
+        current_user.get_token, UPLOAD_REQUEST)
 
-        format.html { redirect_to @dist_file, notice: 'Dist file was successfully created.' }
-        format.json { render :show, status: :created, location: @dist_file }
+          format.html { redirect_to @dist_file, notice: 'Dist file was successfully created.' }
+          format.json { render :show, status: :created, location: @dist_file }
+        end
       else
-        format.html { render :new }
-        format.json { render json: @dist_file.errors, status: :unprocessable_entity }
+        if @token
+          head :unprocessable_entity
+        else
+          format.html { render :new }
+          format.json { render json: @dist_file.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -70,11 +80,15 @@ class DistFilesController < ApplicationController
   # DELETE /dist_files/1
   # DELETE /dist_files/1.json
   def destroy
-    ReplicaWorker.perform_async({id_of_dist_file: @dist_file.id, token: current_user.get_token}) unless @token
     @dist_file.destroy
     respond_to do |format|
-      format.html { redirect_to dist_files_url, notice: 'Dist file was successfully destroyed.' }
-      format.json { head :no_content }
+      if @token
+        format.html { head :ok }
+      else
+        ReplicaWorker.perform_async("", @dist_file.id, "",  current_user.get_token, DELETE_REQUEST)
+        format.html { redirect_to dist_files_url, notice: 'Dist file was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
