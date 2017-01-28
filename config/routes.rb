@@ -1,10 +1,15 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  resources :node_types
-  resources :nodes
   devise_for :users
-  resources :dist_files
+
+  scope '/app' do
+    resources :node_types
+    resources :nodes
+    resources :users
+    resources :dist_files
+  end
+
   mount Sidekiq::Web => '/sidekiq'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
