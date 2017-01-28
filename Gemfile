@@ -34,6 +34,7 @@ gem 'paperclip'
 gem 'jwt'
 gem 'devise'
 gem 'sidekiq'
+gem 'chosen-rails'
 gem 'materialize-sass'
 
 gem 'rest-client', git: "git@github.com:jameseggers/rest-client.git"

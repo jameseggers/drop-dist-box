@@ -3,6 +3,8 @@ require 'constants'
 
 class DistFilesController < ApplicationController
   include Constants
+  include DistFilesHelper
+
   before_action :set_dist_file, only: [:show, :edit, :update, :destroy, :download]
   protect_from_forgery except: [:download, :create]
   before_action :is_user_authenticated?
@@ -19,10 +21,12 @@ class DistFilesController < ApplicationController
   end
 
   def download
-    send_file @dist_file.attached.path,
-                filename: @dist_file.attached.file_name,
-                type: @dist_file.attached.content_type,
-                disposition: 'attachment'
+    node_address = get_file_from_node(@dist_file.id)
+    if node_address
+      redirect_to node_address
+    else
+      head :unauthorized
+    end
   end
 
   # GET /dist_files/new
@@ -111,7 +115,7 @@ class DistFilesController < ApplicationController
     def is_user_authenticated?
       if params.key? :token
         @token = JWT.decode(params[:token], Rails.application.secrets.secret_key_base)
-        return (@token) ? true : false
+        return (@token[0]["available_files_by_id"].count(params[:id]))
       else
         @token = false
         authenticate_user!

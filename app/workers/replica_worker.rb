@@ -5,11 +5,6 @@ class ReplicaWorker
   include Sidekiq::Worker
   include Constants
 
-# (name, path, token, request_type
-# ReplicaWorker.perform_async({name_of_file: @dist_file.name,
-#   path: @dist_file.attached.path, token: current_user.get_token,
-#   request_type: UPLOAD_REQUEST}) unless @token
-
   def perform(name, id, path, token, request_type)
     args = create_args_hash(name, id, path, token, request_type)
 

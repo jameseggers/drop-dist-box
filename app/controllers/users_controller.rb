@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   # GET /app/users/1
   # GET /app/users/1.json
   def show
+    @dist_files = current_user.dist_files
   end
 
   # GET /app/users/new
@@ -69,6 +70,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.require(:user).permit(:email, :password, :password_confirmation, selected_dist_files: [])
     end
 end

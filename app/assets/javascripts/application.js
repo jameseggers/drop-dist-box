@@ -13,10 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require chosen-jquery
 //= require materialize-sprockets
 //= require_tree .
 
 
 $( document ).ready(function () {
   $(".dropdown-button").dropdown();
+
+  $('.chosen-select').chosen({
+    allow_single_deselect: true,
+    no_results_text: 'No results matched',
+    width: '200px'
+  });
 });

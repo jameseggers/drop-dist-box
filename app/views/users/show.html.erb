@@ -15,5 +15,14 @@
   <%= @user.password_confirmation %>
 </p>
 
+<p>
+  <strong> Files has access to </strong>
+  <ol>
+    <% @dist_files.each do |file| %>
+      <li> <%= file.name %> </li>
+    <% end %>
+  </ol>
+</p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

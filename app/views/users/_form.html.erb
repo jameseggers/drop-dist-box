@@ -26,6 +26,15 @@
     <%= f.text_field :password_confirmation %>
   </div>
 
+  <hr>
+  <label> Add files this user can access </label
+<div class="field">
+  <%= f.select :selected_dist_files,
+    DistFile.all.map { |u| [u.name, u.id] },
+                 { include_blank: true },
+                 { class: 'chosen-select', multiple: true}
+  %>
+</div>
   <div class="actions">
     <%= f.submit %>
   </div>
