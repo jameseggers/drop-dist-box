@@ -32,3 +32,18 @@ To store and manage the attachments in the Rails app, the [Paperclip](https://gi
 When a user clicks into a file, the system shows the image by itself accompanied by other relevant details such as the name. The user can choose to **edit**, or **download** the file.
 
 Upon clicking **download**, the system uses a **round-robin** style approach to find a node in the cluster with the file available, and redirects the user to the correct address to download the requested file.
+
+##### Upload Screen
+![image](https://s3-eu-west-1.amazonaws.com/dist-report/upload-screen.png)
+
+When a user wants to upload a file, they can do so here. It's as simple as filling in a name for the file, and then selecting the file from your computer to upload and clicking **Create dist file**. This will then upload the file to each node in the cluster.
+
+##### List Users Screen
+![image](https://s3-eu-west-1.amazonaws.com/dist-report/list-users-screen.png)
+
+An Admin user can see all the other users on the system, this view allows them to see them, edit their details and to delete them.
+
+##### Edit Users Screen
+![image](https://s3-eu-west-1.amazonaws.com/dist-report/edit-user-screen.png)
+
+Users can edit their settings, and an admin can change which files another user can see as shown in the screenshot.
